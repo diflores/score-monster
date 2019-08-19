@@ -4,7 +4,7 @@ Collect the scores of your hackerrank contests and store them in a google sheets
 
 ## Special Thanks
 
-Special thanks to for doing the previous versions of this script, previously known as `score-collector` .
+Special thanks to [@mjjunemann](https://github.com/mjjunemann), [@fvr1](https://github.com/fvr1), and [@gnmonsalve](https://github.com/gnmonsalve) for doing the previous versions of this script, previously known as `score-collector` .
 
 ## Installation
 
