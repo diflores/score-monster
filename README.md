@@ -72,24 +72,19 @@ The first key should always be `sheets` .
 
     A list of "sheet objects" where scores should be written. Inside each one you should specifiy the following items:
 
+  * `sheetUrl` : The url to the spreadsheet where the specified contest scores will be written.
 
-  + `sheetUrl` : The url to the spreadsheet where the specified contest scores will be written.
+  * `tabName` : The name of the tab were scores will be written. Case sensitive. Based on the example above, the following picture shows two tabs on the spreadsheet: `Todos` which is the tab where scores will be written, and `Stats` which will be covered on the next item.
 
-  + `tabName` : The name of the tab were scores will be written. Case sensitive. Based on the example above, the following picture shows two tabs on the spreadsheet: `Todos` which is the tab where scores will be written, and `Stats` which will be covered on the next item.
+  * `showStats` (Optional): Indicates where stats (such as last updated) are shown in the `Stats` tab. So far, the only stat written is last updated, and it is always written on cell `A2` . An example of a `Stats` tab is shown below.
 
-  + `showStats` (Optional): Indicates where stats (such as last updated) are shown in the `Stats` tab. So far, the only stat written is last updated, and it is always written on cell `A2` . An example of a `Stats` tab is shown below.
+  * `contests` : An array of contests that will be written on this specific spreadsheet. Array contains "contest objects" as follows:
 
-  + `contests` : An array of contests that will be written on this specific spreadsheet. Array contains "contest objects" as follows:
+    * `link` : The part of the hackerrank link that takes you to the contest. For example, if the complete link is www.hackerrank.com/iic1103-2019-2-lab1, then the link would be `iic1103-2019-2-lab1`
 
-    - `link` : The part of the hackerrank link that takes you to the contest. For example, if the complete link is www.hackerrank.com/iic1103-2019-2-lab1, then the link would be `iic1103-2019-2-lab1`
+    * `startLimit` (Optional): Sets a limit date from which scores will be considered. Any submission before that date is not considered. If this parameter is not given, any submission before `endLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
 
-
-
-    - `startLimit` (Optional): Sets a limit date from which scores will be considered. Any submission before that date is not considered. If this parameter is not given, any submission before `endLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
-
-    - `endLimit` (Optional): Sets a top limit date which scores will be considered. Any submission after that date is not considered. If this parameter is not given, any submission after `startLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
-
-
+    * `endLimit` (Optional): Sets a top limit date which scores will be considered. Any submission after that date is not considered. If this parameter is not given, any submission after `startLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .ç
 
 ## Usage
 
@@ -99,4 +94,3 @@ Simple run the two following lines:
 pipenv shell
 python main.py
 ```
-
