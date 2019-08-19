@@ -11,7 +11,7 @@ QUOTA = 100  # 1s per request to the api
 class Worksheet:
     def __init__(self,
                  sheet_url: str,
-                 sheet_name: str,
+                 tab_name: str,
                  show_stats: bool):
 
         # Define the scope of permissions
@@ -27,7 +27,7 @@ class Worksheet:
 
         # Find a workbook by name and open the sheet name
         # Make sure you use the right name here.
-        self.sheet = self.client.open_by_url(sheet_url).worksheet(sheet_name)
+        self.sheet = self.client.open_by_url(sheet_url).worksheet(tab_name)
         self.requests += 1  # Opening counts as a request
 
         self.stats = self.client.open_by_url(sheet_url).worksheet("Stats")

@@ -41,7 +41,7 @@ class Mediator:
             # Ensure the json has the necessary data.
             assert sheet_opts.get('sheetUrl'), (f'There is no sheetUrl'
                                                 f' for the worksheet {i}')
-            assert sheet_opts.get('sheetName'), (f'There is sheetName'
+            assert sheet_opts.get('tabName'), (f'There is tabName'
                                                  f' to be used for the'
                                                  f' worksheet {i}')
             assert sheet_opts.get('contests'), (f'There are no contests'
@@ -49,7 +49,7 @@ class Mediator:
 
             # Extract the data needed from the json
             sheet_url = sheet_opts['sheetUrl']
-            sheet_name = sheet_opts['sheetName']
+            tab_name = sheet_opts['tabName']
             contests = sheet_opts['contests']
 
             # If no param of showStats is found, then stats
@@ -57,7 +57,7 @@ class Mediator:
             show_stats = bool(sheet_opts.get('showStats'))
 
             # Instantiate the worksheet with all the data
-            sheet = Worksheet(sheet_url, sheet_name, show_stats)
+            sheet = Worksheet(sheet_url, tab_name, show_stats)
 
             # Enumerate and iterate over the contests, begin in one,
             # as the first column is for the usernames
