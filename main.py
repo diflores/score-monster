@@ -1,9 +1,9 @@
-from services import HackerrankAPI
-
+from services import Mediator
 
 
 def main():
-    print(HackerrankAPI('iic1103-2019-1-lab1').get_leadearboard())
+    mediator = Mediator()
+    mediator.begin_collection()
 
 
 if __name__ == "__main__":

@@ -19,12 +19,12 @@ class HackerrankAPI:
 
     def __init__(self,
                  contest: str,
-                 limit_start: datetime = None,
-                 limit_end: datetime = None):
+                 start_limit: datetime = None,
+                 end_limit: datetime = None):
 
         self.contest = contest
-        self.limit_start = limit_start
-        self.limit_end = limit_end
+        self.start_limit = start_limit
+        self.end_limit = end_limit
 
     def render_link(self, offset, limit):
         '''
@@ -36,7 +36,7 @@ class HackerrankAPI:
             limit=limit
         )
 
-    def on_time(self, actual):
+    def on_time(self, actual: str):
         '''
             Indicates if a date is between the ranges defined on the
             instance of the api. If no limits are specified in any of the
@@ -45,11 +45,14 @@ class HackerrankAPI:
 
         '''
 
+        # Make the actual timestamp to a datetime for comparison
+        act_ts = datetime.fromtimestamp(float(actual))
+
         # If the start limit is defined, then compare if it is bigger.
-        bottom_limit = self.limit_start <= actual if self.limit_start else True
+        bottom_limit = self.start_limit <= act_ts if self.start_limit else True
 
         # If the end limit is defined, then compare if it is smaller.
-        top_limit = actual <= self.limit_end if self.limit_end else True
+        top_limit = act_ts <= self.end_limit if self.end_limit else True
 
         # Return if it meets bottom limit conditions and top limit conditions
         return bottom_limit and top_limit
@@ -62,7 +65,6 @@ class HackerrankAPI:
         '''
 
         # Return a new dictionary with all the information filtered.
-        print(hacker)
         return {K: hacker[K] for K in self.TARGET_KEYS}
 
     def parse_new_hackers(self, response: Response):
@@ -76,6 +78,9 @@ class HackerrankAPI:
         # Models contains all the hackers of that pagination
         # Filter only the target keys set above
         return map(self.filter_keys, json_response['models'])
+
+    def filter_on_time(self, hackers: List[Dict[str, str]]):
+        return filter(lambda h: self.on_time(h['timestamp']), hackers)
 
     def get_leadearboard(self):
         '''
@@ -114,4 +119,4 @@ class HackerrankAPI:
             response = http_get(self.render_link(offset, LEADERBOARD_LIMIT))
 
         # Retrun the complete list of hackers
-        return all_hackers
+        return self.filter_on_time(all_hackers)
