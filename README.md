@@ -98,3 +98,7 @@ Simple run the two following lines:
 pipenv shell
 python main.py
 ```
+## Frequently asked questions
+
+- `What if just want to add the scores of some users ?`
+    Currently there is no support for that, but a simple workaround is to hide the sheet with all the scores, and create a new one with the only usernames you want. Their scores would be extracted from the hidden one by a `VLOOPKUP` function in the spreadsheet.
