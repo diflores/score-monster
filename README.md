@@ -76,7 +76,11 @@ The first key should always be `sheets` .
 
   * `tabName` : The name of the tab were scores will be written. Case sensitive. Based on the example above, the following picture shows two tabs on the spreadsheet: `Todos` which is the tab where scores will be written, and `Stats` which will be covered on the next item.
 
+  ![tabs_example](assets/tabs.png)
+
   * `showStats` (Optional): Indicates where stats (such as last updated) are shown in the `Stats` tab. So far, the only stat written is last updated, and it is always written on cell `A2` . An example of a `Stats` tab is shown below.
+
+    ![stats_example](assets/stats.png)
 
   * `contests` : An array of contests that will be written on this specific spreadsheet. Array contains "contest objects" as follows:
 
