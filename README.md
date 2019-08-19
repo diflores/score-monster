@@ -42,7 +42,7 @@ Install dependencies:
 
 This file contains all the necessary information to collect the scores, and also where to write them. Here's an example
 
-** `collect.json` **
+**`collect.json`**
 
 ``` json
 {
