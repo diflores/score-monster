@@ -26,7 +26,7 @@ Install dependencies:
 
 ## Basic Configuration
 
-1. [Obtain OAuth2 credentials from Google Developers Console](https://gspread.readthedocs.io/en/latest/oauth2.html#using-signed-credentials). **Follow instructions of the site until step 4**
+1. [Obtain OAuth2 credentials from Google Developers Console](https://gspread.readthedocs.io/en/latest/oauth2.html#using-signed-credentials). **Follow instructions of the site until Step 4.**
 
 2. Rename the credentials to `credentials.json`
 
@@ -88,7 +88,7 @@ The first key should always be `sheets` .
 
     * `startLimit` (Optional): Sets a limit date from which scores will be considered. Any submission before that date is not considered. If this parameter is not given, any submission before `endLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
 
-    * `endLimit` (Optional): Sets a top limit date which scores will be considered. Any submission after that date is not considered. If this parameter is not given, any submission after `startLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .ç
+    * `endLimit` (Optional): Sets a top limit date which scores will be considered. Any submission after that date is not considered. If this parameter is not given, any submission after `startLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
 
 ## Usage
 
