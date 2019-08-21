@@ -79,8 +79,8 @@ class Mediator:
                              if contest_info.get('endLimit') else None)
 
                 # Instantiate the hackerrank application
-                hackerrank_API = HackerrankAPI(link, start_limit, end_limit,
-                                               self.filter)
+                hackerrank_API = HackerrankAPI(link, self.filter, start_limit,
+                                               end_limit)
                 hackers = hackerrank_API.get_leadearboard()
 
                 # Update the scores
