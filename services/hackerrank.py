@@ -19,14 +19,14 @@ class HackerrankAPI:
 
     def __init__(self,
                  contest: str,
+                 username_filter: list,
                  start_limit: datetime = None,
-                 end_limit: datetime = None,
-                 username_filter: list):
+                 end_limit: datetime = None):
 
         self.contest = contest
+        self.username_filter = username_filter
         self.start_limit = start_limit
         self.end_limit = end_limit
-        self.username_filter = username_filter
 
     def render_link(self, offset, limit):
         '''
