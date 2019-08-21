@@ -31,6 +31,9 @@ class Mediator:
         # Store all the sheets information
         self.sheets: List[Dict[str, Any]] = options['sheets']
 
+        # Store wanted usernames
+        self.filter = [] if not options.get('filter') else options['filter']
+
     def begin_collection(self):
         '''
             Begins the collection of scores from the json.
@@ -76,7 +79,8 @@ class Mediator:
                              if contest_info.get('endLimit') else None)
 
                 # Instantiate the hackerrank application
-                hackerrank_API = HackerrankAPI(link, start_limit, end_limit)
+                hackerrank_API = HackerrankAPI(link, start_limit, end_limit,
+                                               self.filter)
                 hackers = hackerrank_API.get_leadearboard()
 
                 # Update the scores
