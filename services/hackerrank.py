@@ -20,11 +20,13 @@ class HackerrankAPI:
     def __init__(self,
                  contest: str,
                  start_limit: datetime = None,
-                 end_limit: datetime = None):
+                 end_limit: datetime = None,
+                 username_filter: list):
 
         self.contest = contest
         self.start_limit = start_limit
         self.end_limit = end_limit
+        self.username_filter = username_filter
 
     def render_link(self, offset, limit):
         '''
@@ -117,6 +119,11 @@ class HackerrankAPI:
 
             # Request a new set of hackers
             response = http_get(self.render_link(offset, LEADERBOARD_LIMIT))
+
+        # Filter hackers
+        if self.username_filter:
+            all_hackers = list(filter(
+                lambda x: x['hacker'] in self.username_filter, all_hackers))
 
         # Retrun the complete list of hackers
         return self.filter_on_time(all_hackers)
