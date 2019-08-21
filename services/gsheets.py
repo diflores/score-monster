@@ -69,7 +69,7 @@ class Worksheet:
                     and "quota" in err_json['error']['message'].lower()):
                 # Sleep to keep up with quota and call again
                 sleep(100)
-                self.get_hacker_cell(hacker)
+                return self.get_hacker_cell(hacker)
             else:
                 raise ConnectionError(err_json['error']['message'])
 
