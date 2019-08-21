@@ -8,7 +8,7 @@ Special thanks to [@mjjunemann](https://github.com/mjjunemann), [@fvr1](https://
 
 ## Installation
 
-Requirements: Python 3.6+, [ `pipenv` ](https://github.com/pypa/pipenv).
+Requirements: Python 3.6+, [`pipenv`](https://github.com/pypa/pipenv).
 
 ``` sh
 git clone https://github.com/IIC1103/score-monster.git
@@ -59,7 +59,12 @@ This file contains all the necessary information to collect the scores, and also
                 "endLimit": [2019, 8, 26, 20, 0]
             }
         ]
-    }]
+    }],
+    "filter": [
+        "hacker_1",
+        "hacker_5",
+        "hacker_17"
+    ]
 }
 
 ```
@@ -90,6 +95,8 @@ The first key should always be `sheets` .
 
     * `endLimit` (Optional): Sets a top limit date which scores will be considered. Any submission after that date is not considered. If this parameter is not given, any submission after `startLimit` is valid. The date should be passed as an array of 5 integers as follows: `[year, month, day, hour, minute]` .
 
+* `filter` : An optional list of strings. Each string should represent a hacker's username. The script will collect only data from the specified hackers. Data from every hacker will be collected if this parameter is ommited or is left as an empty list.
+
 ## Usage
 
 Simple run the two following lines:
@@ -98,7 +105,3 @@ Simple run the two following lines:
 pipenv shell
 python main.py
 ```
-## Frequently asked questions
-
-- `What if just want to add the scores of some users ?`
-    Currently there is no support for that, but a simple workaround is to hide the sheet with all the scores, and create a new one with the only usernames you want. Their scores would be extracted from the hidden one by a `VLOOPKUP` function in the spreadsheet.
