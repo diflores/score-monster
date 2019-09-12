@@ -15,7 +15,7 @@ class HackerrankAPI:
         An interface for interacting with hackerrank information
     '''
 
-    TARGET_KEYS = ['hacker', 'score', 'timestamp']
+    TARGET_KEYS = ['hacker', 'score', 'time_taken']
 
     def __init__(self,
                  contest: str,
@@ -47,14 +47,18 @@ class HackerrankAPI:
 
         '''
 
-        # Make the actual timestamp to a datetime for comparison
-        act_ts = datetime.fromtimestamp(float(actual))
+        if self.start_limit:
+            final_date = datetime.fromtimestamp(
+                self.start_limit.timestamp() + float(actual))
+        else:
+            # Irrelevant if start_limit is not set. Only as a placeholder
+            final_date = datetime.now()
 
         # If the start limit is defined, then compare if it is bigger.
-        bottom_limit = self.start_limit <= act_ts if self.start_limit else True
+        bottom_limit = self.start_limit <= final_date if self.start_limit else True
 
         # If the end limit is defined, then compare if it is smaller.
-        top_limit = act_ts <= self.end_limit if self.end_limit else True
+        top_limit = final_date <= self.end_limit if self.end_limit else True
 
         # Return if it meets bottom limit conditions and top limit conditions
         return bottom_limit and top_limit
@@ -82,7 +86,7 @@ class HackerrankAPI:
         return map(self.filter_keys, json_response['models'])
 
     def filter_on_time(self, hackers: List[Dict[str, str]]):
-        return filter(lambda h: self.on_time(h['timestamp']), hackers)
+        return filter(lambda h: self.on_time(h['time_taken']), hackers)
 
     def get_leadearboard(self):
         '''
