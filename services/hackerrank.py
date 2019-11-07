@@ -5,7 +5,7 @@ from typing import List, Union, Dict
 from datetime import datetime
 
 # local
-from .constants.templates import HACKERRANK_LINK
+from .constants.templates import HACKERRANK_CONTEST_LINK, HACKERRANK_LEADERBOARD_LINK
 from .constants.fixed_numbers import LEADERBOARD_LIMIT
 
 
@@ -28,14 +28,20 @@ class HackerrankAPI:
         self.username_filter = username_filter
         self.start_limit = start_limit
         self.end_limit = end_limit
+        self._epoch_start_time = None
 
-    def render_link(self, offset, limit):
+    def render_leaderboard_link(self, offset, limit):
         """
-            Renders a links of a contest with a certain offset and limit
+            Renders a links of a leaderboard in a contest with
+            a certain offset and limit
         """
-        return HACKERRANK_LINK.substitute(
+        return HACKERRANK_LEADERBOARD_LINK.substitute(
             contest_name=self.contest, offset=offset, limit=limit
         )
+
+    @property
+    def contest_link(self):
+        return HACKERRANK_CONTEST_LINK.substitute(contest_name=self.contest)
 
     def on_time(self, actual: str):
         """
@@ -46,21 +52,14 @@ class HackerrankAPI:
 
         """
 
-        if self.start_limit:
-            final_date = datetime.fromtimestamp(
-                self.start_limit.timestamp() + float(actual)
-            )
-        else:
-            # Irrelevant if start_limit is not set. Only as a placeholder
-            final_date = datetime.now()
+        final_date = datetime.fromtimestamp(
+            self._epoch_start_time + float(actual)
+        )
 
-        # If the start limit is defined, then compare if it is bigger.
         bottom_limit = self.start_limit <= final_date if self.start_limit else True
 
-        # If the end limit is defined, then compare if it is smaller.
         top_limit = final_date <= self.end_limit if self.end_limit else True
 
-        # Return if it meets bottom limit conditions and top limit conditions
         return bottom_limit and top_limit
 
     def filter_keys(self, hacker):
@@ -85,7 +84,16 @@ class HackerrankAPI:
         # Filter only the target keys set above
         return map(self.filter_keys, json_response["models"])
 
+    @property
+    def epoch_contest_start_time(self):
+        if not self._epoch_start_time:
+            response = http_get(self.contest_link)
+            json_response = load_json_str(response.text)
+            self._epoch_start_time = json_response["model"]["epoch_starttime"]
+        return self._epoch_start_time
+
     def filter_on_time(self, hackers: List[Dict[str, str]]):
+        self.epoch_contest_start_time
         return filter(lambda h: self.on_time(h["time_taken"]), hackers)
 
     def get_leadearboard(self):
@@ -100,9 +108,9 @@ class HackerrankAPI:
         # the added.
         offset = 0
 
-        print(self.render_link(offset, LEADERBOARD_LIMIT))
+        print(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
         # Make initial request
-        response = http_get(self.render_link(offset, LEADERBOARD_LIMIT))
+        response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
 
         # Make a json from it
         json_response = load_json_str(response.text)
@@ -122,7 +130,7 @@ class HackerrankAPI:
             offset = len(all_hackers)
 
             # Request a new set of hackers
-            response = http_get(self.render_link(offset, LEADERBOARD_LIMIT))
+            response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
 
         # Filter hackers
         if self.username_filter:
