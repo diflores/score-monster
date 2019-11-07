@@ -9,16 +9,14 @@ QUOTA = 100  # 1s per request to the api
 
 
 class Worksheet:
-    def __init__(self,
-                 sheet_url: str,
-                 tab_name: str,
-                 show_stats: bool):
+    def __init__(self, sheet_url: str, tab_name: str, show_stats: bool):
 
         # Define the scope of permissions
-        scope = ['https://spreadsheets.google.com/feeds']
+        scope = ["https://spreadsheets.google.com/feeds"]
         # use creds to create a client to interact with the Google Drive API
         creds = ServiceAccountCredentials.from_json_keyfile_name(
-            'credentials.json', scope)
+            "credentials.json", scope
+        )
         self.client = gspread.authorize(creds)
         self.show_stats = show_stats
 
@@ -44,9 +42,9 @@ class Worksheet:
         self.__requests = value % QUOTA
 
     def get_hacker_cell(self, hacker: str):
-        '''
+        """
             Finds the hacker username in a worksheet and returns it's cell
-        '''
+        """
         try:
             # The cell found
             cell: gspread.Cell = self.sheet.find(hacker)
@@ -64,19 +62,21 @@ class Worksheet:
             # Raise any other error that may occur
             err_json = e.response.json()
             if e.response.status_code == 400:
-                raise PermissionError(err_json['error']['message'])
-            elif (e.response.status_code == 429
-                    and "quota" in err_json['error']['message'].lower()):
+                raise PermissionError(err_json["error"]["message"])
+            elif (
+                e.response.status_code == 429
+                and "quota" in err_json["error"]["message"].lower()
+            ):
                 # Sleep to keep up with quota and call again
                 sleep(100)
                 return self.get_hacker_cell(hacker)
             else:
-                raise ConnectionError(err_json['error']['message'])
+                raise ConnectionError(err_json["error"]["message"])
 
     def _add_value(self, value, *, row: int, col: int):
-        '''
+        """
             Adds or replaces a value of a certain row and column
-        '''
+        """
 
         try:
 
@@ -99,21 +99,23 @@ class Worksheet:
 
             # Check the status code. If known do something specific
             if e.response.status_code == 400:
-                raise PermissionError(err_json['error']['message'])
-            elif (e.response.status_code == 429
-                    and "quota" in err_json['error']['message'].lower()):
+                raise PermissionError(err_json["error"]["message"])
+            elif (
+                e.response.status_code == 429
+                and "quota" in err_json["error"]["message"].lower()
+            ):
                 # Sleep to keep up with quota and call again
                 sleep(QUOTA + 1)
                 self._add_value(value, row=row, col=col)
             else:
-                raise ConnectionError(err_json['error']['message'])
+                raise ConnectionError(err_json["error"]["message"])
 
     def update_score(self, hacker: str, score: str, column: int, **kwargs):
-        '''
+        """
             Update a score of hacker in a certain column.
             :param kwargs: It is only there so that hacker data can be
                 unpacked without throwing eny errors.
-        '''
+        """
         cell = self.get_hacker_cell(hacker)
 
         # Increment request counter
@@ -124,7 +126,7 @@ class Worksheet:
 
             # Make a fill of empty cells. Substract one because first column
             # is for the hackerrank username
-            fill = ['' for _ in range(column - 1)]
+            fill = ["" for _ in range(column - 1)]
 
             # Add the hacker username, a fill of empty cells and the score
             # On its corresponding column
@@ -142,22 +144,24 @@ class Worksheet:
 
                 # Check the status code. If known do something specific
                 if e.response.status_code == 400:
-                    raise PermissionError(err_json['error']['message'])
-                elif (e.response.status_code == 429
-                        and "quota" in err_json['error']['message'].lower()):
+                    raise PermissionError(err_json["error"]["message"])
+                elif (
+                    e.response.status_code == 429
+                    and "quota" in err_json["error"]["message"].lower()
+                ):
                     # Sleep to keep up with quota and call again
                     sleep(QUOTA + 1)
                     return self.update_score(hacker, score, column, **kwargs)
                 else:
-                    raise ConnectionError(err_json['error']['message'])
+                    raise ConnectionError(err_json["error"]["message"])
 
         # Add one because this function uses indexes starting on 1
         return self._add_value(score, row=cell.row, col=column + 1)
 
     def update_scores(self, hackers: List[Dict[str, str]], column: int):
-        '''
+        """
             Updates the scores of a list of hackers.
-        '''
+        """
         updated = 0
 
         # Iterate over every hacker, unpack its data, and add its score
@@ -174,9 +178,7 @@ class Worksheet:
         return updated
 
     def update_stats(self):
-        '''
+        """
             Updates the stats cells
-        '''
-        self.stats.update_cell(2, 1,
-                               datetime.now().strftime('%d %b, %Y %H:%M:%S')
-                               )
+        """
+        self.stats.update_cell(2, 1, datetime.now().strftime("%d %b, %Y %H:%M:%S"))
