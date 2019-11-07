@@ -105,3 +105,7 @@ Simple run the two following lines:
 pipenv shell
 python main.py
 ```
+
+## Notes
+
+- Contests inside `collect.json` must contain either a `startTime` **and** an `endTime`, only a `startTime` or neither. The script won't work if only an `endTime` is given.
