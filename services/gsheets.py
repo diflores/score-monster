@@ -128,11 +128,29 @@ class Worksheet:
 
             # Add the hacker username, a fill of empty cells and the score
             # On its corresponding column
-            self.sheet.append_row([hacker] + fill + [score])
 
-            # Increment request counter
-            self.requests += 1
-            return True
+            try:
+
+                self.sheet.append_row([hacker] + fill + [score])
+
+                # Increment request counter
+                self.requests += 1
+                return True
+            except gspExceptions.APIError as e:
+                # Grab the error
+                err_json = e.response.json()
+
+                # Check the status code. If known do something specific
+                if e.response.status_code == 400:
+                    raise PermissionError(err_json['error']['message'])
+                elif (e.response.status_code == 429
+                        and "quota" in err_json['error']['message'].lower()):
+                    # Sleep to keep up with quota and call again
+                    sleep(QUOTA + 1)
+                    return self.update_score(hacker, score, column, **kwargs)
+                else:
+                    raise ConnectionError(err_json['error']['message'])
+
         # Add one because this function uses indexes starting on 1
         return self._add_value(score, row=cell.row, col=column + 1)
 
@@ -144,6 +162,7 @@ class Worksheet:
 
         # Iterate over every hacker, unpack its data, and add its score
         for hacker in hackers:
+
             updated += int(self.update_score(column=column, **hacker))
 
         # If option to show stats is true, update the stats
