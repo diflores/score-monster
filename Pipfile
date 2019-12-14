@@ -12,6 +12,10 @@ autopep8 = "*"
 requests = "*"
 gspread = "*"
 oauth2client = "*"
+fake-useragent = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

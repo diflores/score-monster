@@ -3,6 +3,7 @@ from requests import get as http_get, Response
 from json import loads as load_json_str
 from typing import List, Union, Dict
 from datetime import datetime
+from fake_useragent import UserAgent
 
 # local
 from .constants.templates import HACKERRANK_CONTEST_LINK, HACKERRANK_LEADERBOARD_LINK
@@ -29,6 +30,9 @@ class HackerrankAPI:
         self.start_limit = start_limit
         self.end_limit = end_limit
         self._epoch_start_time = None
+        self.headers = {
+            "User-Agent": UserAgent().firefox
+        }
 
     def render_leaderboard_link(self, offset, limit):
         """
@@ -87,7 +91,7 @@ class HackerrankAPI:
     @property
     def epoch_contest_start_time(self):
         if not self._epoch_start_time:
-            response = http_get(self.contest_link)
+            response = http_get(self.contest_link, headers=self.headers)
             json_response = load_json_str(response.text)
             self._epoch_start_time = json_response["model"]["epoch_starttime"]
         return self._epoch_start_time
@@ -110,8 +114,8 @@ class HackerrankAPI:
 
         print(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
         # Make initial request
-        response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
-
+        response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT),
+                            headers=self.headers)
         # Make a json from it
         json_response = load_json_str(response.text)
 
@@ -130,7 +134,8 @@ class HackerrankAPI:
             offset = len(all_hackers)
 
             # Request a new set of hackers
-            response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
+            response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT),
+                                headers=self.headers)
 
         # Filter hackers
         if self.username_filter:
