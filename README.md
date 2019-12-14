@@ -99,7 +99,9 @@ The first key should always be `sheets` .
 
 ## Usage
 
-Simple run the two following lines:
+1. Log in to Hackerrank either in firefox or chrome.
+2. Simply run the two following lines:
+
 
 ``` sh
 pipenv shell
