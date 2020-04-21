@@ -4,7 +4,6 @@ from json import loads as load_json_str
 from typing import List, Union, Dict
 from datetime import datetime
 from fake_useragent import UserAgent
-from browser_cookie3 import load
 
 # local
 from .constants.templates import HACKERRANK_CONTEST_LINK, HACKERRANK_LEADERBOARD_LINK
@@ -34,7 +33,6 @@ class HackerrankAPI:
         self.headers = {
             "User-Agent": UserAgent().firefox
         }
-        self.cookies = load()
 
     def render_leaderboard_link(self, offset, limit):
         """
@@ -93,8 +91,7 @@ class HackerrankAPI:
     @property
     def epoch_contest_start_time(self):
         if not self._epoch_start_time:
-            response = http_get(self.contest_link, headers=self.headers,
-                                cookies=self.cookies)
+            response = http_get(self.contest_link, headers=self.headers)
             json_response = load_json_str(response.text)
             self._epoch_start_time = json_response["model"]["epoch_starttime"]
         return self._epoch_start_time
@@ -118,7 +115,7 @@ class HackerrankAPI:
         print(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT))
         # Make initial request
         response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT),
-                            headers=self.headers, cookies=self.cookies)
+                            headers=self.headers)
         # Make a json from it
         json_response = load_json_str(response.text)
 
@@ -138,7 +135,7 @@ class HackerrankAPI:
 
             # Request a new set of hackers
             response = http_get(self.render_leaderboard_link(offset, LEADERBOARD_LIMIT),
-                                headers=self.headers, cookies=self.cookies)
+                                headers=self.headers)
 
         # Filter hackers
         if self.username_filter:
