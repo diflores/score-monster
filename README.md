@@ -151,6 +151,7 @@ COLLECTION_NAME
 3. Upload to Heroku (or any server that runs 24/7, since this bot will run every day at 0:00 GMT-4 to
    check if there's a new contest to collect). This repository provides all you need to deploy to Heroku.
    **Quick tutorial to deploy to Heroku**
+   Step 0: Create a Heroku account.
    a. Install Heroku CLI (https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
    b. Run `heroku create`.
    c. Set config vars (environment variables on Heroku) by running the following lines:
@@ -167,3 +168,4 @@ d. Run `git checkout master`, `git add -f collect.json credentials.json`, and `g
 **Make sure you don't push these files to a public repo on GitHub, BitBucket, GitLab, etc**.
 e. Run `git push heroku master`.
 f. The script is ready.
+g. You can check some more details of your deployment at Heroku dashboard.
