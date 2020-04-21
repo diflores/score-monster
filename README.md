@@ -153,8 +153,11 @@ COLLECTION_NAME
    **Quick tutorial to deploy to Heroku**
    Step 0: Create a Heroku account.
    a. Install Heroku CLI (https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+   
    b. Run `heroku create`.
+   
    d. Run `heroku buildpacks:set heroku/python`.
+   
    e. Set config vars (environment variables on Heroku) by running the following lines:
 
 ```
@@ -168,5 +171,7 @@ Replace "value" with your information.
 f. Run `git checkout master`, `git add -f collect.json credentials.json`, and `git commit -m "add credentials"`. This is the only way for this to work on Heroku. An alternative and more secure way to do this would be to upload these files to a safe location and import them through an API (PRs welcome!).
 **Make sure you don't push these files to a public repo on GitHub, BitBucket, GitLab, etc**.
 g. Run `git push heroku master`.
+
 h. The script is ready.
+
 i. You can check some more details of your deployment at Heroku dashboard.
