@@ -168,8 +168,10 @@ heroku config:set DB_NAME=value
 heroku config:set COLLECTION_NAME=value
 ```
 Replace "value" with your information.
+
 f. Run `git checkout master`, `git add -f collect.json credentials.json`, and `git commit -m "add credentials"`. This is the only way for this to work on Heroku. An alternative and more secure way to do this would be to upload these files to a safe location and import them through an API (PRs welcome!).
 **Make sure you don't push these files to a public repo on GitHub, BitBucket, GitLab, etc**.
+
 g. Run `git push heroku master`.
 
 h. The script is ready.
