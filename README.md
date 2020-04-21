@@ -174,6 +174,8 @@ f. Run `git checkout master`, `git add -f collect.json credentials.json`, and `g
 
 g. Run `git push heroku master`.
 
-h. The script is ready.
+h. Run `heroku ps:scale bot=1`.
 
-i. You can check some more details of your deployment at Heroku dashboard.
+i. The script is ready.
+
+j. You can check some more details of your deployment at Heroku dashboard.
